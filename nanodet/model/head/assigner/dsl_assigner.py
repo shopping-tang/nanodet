@@ -101,7 +101,7 @@ class DynamicSoftLabelAssigner(BaseAssigner):
 
         cost_matrix = cls_cost + iou_cost * self.iou_factor
 
-        matched_pred_ious, matched_gt_inds = self.dynamic_k_matching(
+        matched_pred_ious, matched_gt_inds, valid_mask = self.dynamic_k_matching(
             cost_matrix, pairwise_ious, num_gt, valid_mask
         )
 
@@ -151,4 +151,4 @@ class DynamicSoftLabelAssigner(BaseAssigner):
 
         matched_gt_inds = matching_matrix[fg_mask_inboxes, :].argmax(1)
         matched_pred_ious = (matching_matrix * pairwise_ious).sum(1)[fg_mask_inboxes]
-        return matched_pred_ious, matched_gt_inds
+        return matched_pred_ious, matched_gt_inds, valid_mask
